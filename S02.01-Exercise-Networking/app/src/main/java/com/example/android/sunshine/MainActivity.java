@@ -25,6 +25,7 @@ import android.widget.TextView;
 
 import com.example.android.sunshine.data.SunshinePreferences;
 import com.example.android.sunshine.utilities.NetworkUtils;
+import com.example.android.sunshine.utilities.OpenWeatherJsonUtils;
 
 import java.io.IOException;
 import java.net.URL;
@@ -81,7 +82,7 @@ public class MainActivity extends AppCompatActivity {
         mErrorMessageTextView.setVisibility(View.VISIBLE);
         mWeatherTextView.setVisibility(View.INVISIBLE);
     }
-    public class FetchWeatherTask extends AsyncTask<URL, Void, String> {
+    public class FetchWeatherTask extends AsyncTask<URL, Void, String[]> {
 
         @Override
         protected void onPreExecute() {
@@ -90,24 +91,32 @@ public class MainActivity extends AppCompatActivity {
         }
 
         @Override
-        protected String doInBackground(URL... params) {
+        protected String[] doInBackground(URL... params) {
             URL searchUrl = params[0];
-            String searchResults = null;
+            String searchResults[] = null;
             try {
-                searchResults = NetworkUtils.getResponseFromHttpUrl(searchUrl);
+                String jsonResponse = NetworkUtils.getResponseFromHttpUrl(searchUrl);
+
+                searchResults = OpenWeatherJsonUtils
+                        .getSimpleWeatherStringsFromJson(MainActivity.this, jsonResponse);
+
             } catch (IOException e) {
+                e.printStackTrace();
+            } catch (Exception e){
                 e.printStackTrace();
             }
             return searchResults;
         }
 
         @Override
-        protected void onPostExecute(String searchResults) {
+        protected void onPostExecute(String[] searchResults) {
 
             mLoadingProgressBar.setVisibility(View.INVISIBLE);
             if (searchResults != null && !searchResults.equals("")) {
                 showWeatherDataView();
-                mWeatherTextView.setText(searchResults);
+
+                for(String str : searchResults)
+                mWeatherTextView.append(str+"\n\n\n");
             } else {
                 showErrorMessage();
             }
