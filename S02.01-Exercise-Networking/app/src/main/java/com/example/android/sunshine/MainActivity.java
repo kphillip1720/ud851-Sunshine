@@ -72,7 +72,7 @@ public class MainActivity extends AppCompatActivity {
     // TODO (6) Override the doInBackground method to perform your network requests
     // TODO (7) Override the onPostExecute method to display the results of the network request
 
-    private void showJsonDataView(){
+    private void showWeatherDataView(){
         mErrorMessageTextView.setVisibility(View.INVISIBLE);
         mWeatherTextView.setVisibility(View.VISIBLE);
     }
@@ -106,7 +106,7 @@ public class MainActivity extends AppCompatActivity {
 
             mLoadingProgressBar.setVisibility(View.INVISIBLE);
             if (searchResults != null && !searchResults.equals("")) {
-                showJsonDataView();
+                showWeatherDataView();
                 mWeatherTextView.setText(searchResults);
             } else {
                 showErrorMessage();
