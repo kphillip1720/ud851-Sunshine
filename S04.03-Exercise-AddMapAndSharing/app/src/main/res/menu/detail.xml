@@ -5,6 +5,6 @@
     tools:context="com.example.android.sunshine.DetailActivity">
     <item
         android:id="@+id/action_share"
-        android:title="@string/share"
+        android:title="@string/share_weater_details"
         app:showAsAction="always"/>
 </menu>

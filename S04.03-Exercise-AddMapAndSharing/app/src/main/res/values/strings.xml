@@ -31,7 +31,7 @@
         An error has occurred. Please try again by clicking REFRESH
     </string>
 
-    <string name="share">Share></string>
+    <string name="share_weater_details">Share Weather Details></string>
 
     <!-- - - - - - - - - - - - - -->
     <!--Used by SunshineDateUtils-->
