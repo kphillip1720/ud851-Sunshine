@@ -233,6 +233,7 @@ public class MainActivity extends AppCompatActivity implements ForecastAdapterOn
 
                 super.deliverResult(resultStr);
                 mWeatherResult = resultStr;
+                mLoadingIndicator.setVisibility(View.INVISIBLE);
             }
         };
     }
