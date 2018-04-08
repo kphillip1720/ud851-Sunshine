@@ -40,7 +40,19 @@ public class WeatherDbHelper extends SQLiteOpenHelper {
 //  TODO (15) Override onCreate and create the weather table from within it
     @Override
     public void onCreate(SQLiteDatabase db) {
-
+        final String SQL_CREATE_WEATHER_TABLE = "CREATE TABLE " +
+                WeatherContract.WeatherEntry.TABLE_NAME + " (" +
+                WeatherContract.WeatherEntry._ID + " INTEGER PRIMARY KEY AUTOINCREMENT," +
+                WeatherContract.WeatherEntry.COLUMN_DATE + " TEXT NOT NULL," +
+                WeatherContract.WeatherEntry.COLUMN_WEATHER_ID + " TEXT NOT NULL," +
+                WeatherContract.WeatherEntry.COLUMN_MIN_TEMP + " TEXT NOT NULL," +
+                WeatherContract.WeatherEntry.COLUMN_MAX_TEMP + " TEXT NOT NULL," +
+                WeatherContract.WeatherEntry.COLUMN_HUMIDITY + " TEXT NOT NULL," +
+                WeatherContract.WeatherEntry.COLUMN_PRESSURE + " TEXT NOT NULL," +
+                WeatherContract.WeatherEntry.COLUMN_WIND_SPEED + " TEXT NOT NULL," +
+                WeatherContract.WeatherEntry.COLUMN_DEGREES + " TEXT NOT NULL" +
+                ");";
+        db.execSQL(SQL_CREATE_WEATHER_TABLE);
     }
 
 //  TODO (16) Override onUpgrade, but don't do anything within it yet

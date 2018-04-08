@@ -52,7 +52,7 @@ public class WeatherContract {
         public static final String COLUMN_WIND_SPEED = "wind";
 
         //      TODO (10) Create a public static final String call COLUMN_DEGREES with the value "degrees"
-        public static final String COLUMN_DEGRESS = "degrees";
+        public static final String COLUMN_DEGREES = "degrees";
     }
 
 }
