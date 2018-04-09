@@ -20,8 +20,11 @@ import android.content.ContentProvider;
 import android.content.ContentValues;
 import android.content.UriMatcher;
 import android.database.Cursor;
+import android.database.sqlite.SQLiteDatabase;
 import android.net.Uri;
 import android.support.annotation.NonNull;
+
+import static com.example.android.sunshine.data.WeatherContract.WeatherEntry.TABLE_NAME;
 
 /**
  * This class serves as the ContentProvider for all of Sunshine's data. This class allows us to
@@ -138,13 +141,47 @@ public class WeatherProvider extends ContentProvider {
      */
     @Override
     public int bulkInsert(@NonNull Uri uri, @NonNull ContentValues[] values) {
-        throw new RuntimeException("Student, you need to implement the bulkInsert method!");
 
-//          TODO (2) Only perform our implementation of bulkInsert if the URI matches the CODE_WEATHER code
+        // Get access to the task database (to write new data to)
+        final SQLiteDatabase db = mOpenHelper.getWritableDatabase();
 
-//              TODO (3) Return the number of rows inserted from our implementation of bulkInsert
+        // Write URI matching code to identify the match for the tasks directory
+        int match = sUriMatcher.match(uri);
+        int numRowsInserted = 0;
 
-//          TODO (4) If the URI does match match CODE_WEATHER, return the super implementation of bulkInsert
+
+            switch (match) {
+                // TODO (2) Only perform our implementation of bulkInsert if the URI matches the CODE_WEATHER code
+                case CODE_WEATHER:
+                    // Insert new values into the database
+                    // Inserting values into tasks table
+                    db.beginTransaction();
+                    try {
+
+                        for (ContentValues contentValues : values) {
+                            long id = db.insert(TABLE_NAME, null, contentValues);
+                            if (id > 0) {
+                                numRowsInserted += 1;
+                            } else {
+                                return super.bulkInsert(uri, values);
+                            }
+                        }
+                        db.setTransactionSuccessful();
+                    }finally {
+                        db.endTransaction();
+                    }
+                    // Notify the resolver if the uri has been changed, and return the newly inserted URI
+                    if (numRowsInserted > 0)
+                        getContext().getContentResolver().notifyChange(uri, null);
+
+                    // TODO (3) Return the number of rows inserted from our implementation of bulkInsert
+                    return numRowsInserted;
+
+               // TODO (4) If the URI does match match CODE_WEATHER, return the super implementation of bulkInsert
+                // Default
+                default:
+                    return super.bulkInsert(uri,values);
+        }
     }
 
     /**
@@ -206,7 +243,7 @@ public class WeatherProvider extends ContentProvider {
 
                 cursor = mOpenHelper.getReadableDatabase().query(
                         /* Table we are going to query */
-                        WeatherContract.WeatherEntry.TABLE_NAME,
+                        TABLE_NAME,
                         /*
                          * A projection designates the columns we want returned in our Cursor.
                          * Passing null will return all columns of data within the Cursor.
@@ -245,7 +282,7 @@ public class WeatherProvider extends ContentProvider {
              */
             case CODE_WEATHER: {
                 cursor = mOpenHelper.getReadableDatabase().query(
-                        WeatherContract.WeatherEntry.TABLE_NAME,
+                        TABLE_NAME,
                         projection,
                         selection,
                         selectionArgs,
