@@ -38,6 +38,7 @@ public class DetailActivity extends AppCompatActivity implements
         LoaderManager.LoaderCallbacks<Cursor> {
 
 
+
     private static final String FORECAST_SHARE_HASHTAG = " #SunshineApp";
 
     public static final String[] WEATHER_DETAIL_PROJECTION = {
